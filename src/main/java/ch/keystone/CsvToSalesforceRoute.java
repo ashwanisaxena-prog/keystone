@@ -1,7 +1,12 @@
 package ch.keystone;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.salesforce.SalesforceComponent;
+import org.apache.camel.component.salesforce.SalesforceLoginConfig;
+import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
+import org.apache.camel.dataformat.bindy.annotation.DataField;
 import org.apache.camel.model.dataformat.BindyType;
+import org.apache.camel.support.jsse.KeyStoreParameters;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -73,5 +78,127 @@ public class CsvToSalesforceRoute extends RouteBuilder {
 	        })
 	        .toD("file:data/success?fileName=${file:name}");
 	}
+	
+	
+	@CsvRecord(separator = ",", skipFirstLine = true)
+	public class ImageRecord {
 
+		@DataField(pos = 1)
+		private String reference;
+		@DataField(pos = 2)
+		private String price;
+		@DataField(pos = 3)
+		private String purchaseDate;
+		@DataField(pos = 4)
+		private String licenceInformation;
+		@DataField(pos = 5)
+		private String subscriptionInformation;
+		@DataField(pos = 6)
+		private String uuid;
+		@DataField(pos = 7)
+		private String imageByline;
+		@DataField(pos = 8)
+		private String imageHeadline;
+		@DataField(pos = 9)
+		private String imageCaption;
+		@DataField(pos = 10)
+		private String imageOid;
+		@DataField(pos = 11)
+		private String imageObjectName;
+		@DataField(pos = 12)
+		private String userUuid;
+		@DataField(pos = 13)
+		private String userLoginName;
+		@DataField(pos = 14)
+		private String companyUuid;
+		@DataField(pos = 15)
+		private String sourcePhotoCode;
+		@DataField(pos = 16)
+		private String conditionUuid;
+
+		// Getters
+		public String getReference() {
+			return reference;
+		}
+
+		public String getPrice() {
+			return price;
+		}
+
+		public String getPurchaseDate() {
+			return purchaseDate;
+		}
+
+		public String getLicenceInformation() {
+			return licenceInformation;
+		}
+
+		public String getSubscriptionInformation() {
+			return subscriptionInformation;
+		}
+
+		public String getUuid() {
+			return uuid;
+		}
+
+		public String getImageByline() {
+			return imageByline;
+		}
+
+		public String getImageHeadline() {
+			return imageHeadline;
+		}
+
+		public String getImageCaption() {
+			return imageCaption;
+		}
+
+		public String getImageOid() {
+			return imageOid;
+		}
+
+		public String getImageObjectName() {
+			return imageObjectName;
+		}
+
+		public String getUserUuid() {
+			return userUuid;
+		}
+
+		public String getUserLoginName() {
+			return userLoginName;
+		}
+
+		public String getCompanyUuid() {
+			return companyUuid;
+		}
+
+		public String getSourcePhotoCode() {
+			return sourcePhotoCode;
+		}
+
+		public String getConditionUuid() {
+			return conditionUuid;
+		}
+	}
+	
+		public static SalesforceComponent getSalesforceComponent() {
+			SalesforceComponent salesforce = new SalesforceComponent();
+
+			SalesforceLoginConfig loginConfig = new SalesforceLoginConfig();
+			loginConfig.setLoginUrl("https://test.salesforce.com");
+			loginConfig
+					.setClientId("3MVG9VwL6uEwP_uTvojRCpFFuAAWYfVXOQrHbjUepFugdba1XF0t_4yKNUEHwkLmByESJEcM4obBUvKWJjMFH");
+			loginConfig.setUserName("sfintegration@keystone-sda.ch.partialsc");
+
+			KeyStoreParameters ksp = new KeyStoreParameters();
+			ksp.setResource("file:data/keystore.jks");
+			ksp.setPassword("ai11"); // password for the keystore
+
+			loginConfig.setKeystore(ksp);
+
+			salesforce.setLoginConfig(loginConfig);
+
+			return salesforce;
+		}
 }

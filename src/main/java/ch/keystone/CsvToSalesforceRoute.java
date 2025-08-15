@@ -1,12 +1,7 @@
 package ch.keystone;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.salesforce.SalesforceComponent;
-import org.apache.camel.component.salesforce.SalesforceLoginConfig;
-import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
-import org.apache.camel.dataformat.bindy.annotation.DataField;
 import org.apache.camel.model.dataformat.BindyType;
-import org.apache.camel.support.jsse.KeyStoreParameters;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,32 +34,32 @@ public class CsvToSalesforceRoute extends RouteBuilder {
 	            exchange.getIn().setHeader("originalFileBody", originalCsv);
 	        })
 	        .log("Received CSV file: ${file:name}")
-	        .unmarshal().bindy(BindyType.Csv, ImageRecord.class)
+	        .unmarshal().bindy(BindyType.Csv, HashMap.class)
 	        // your existing processing logic here...
 	        .process(exchange -> {
-	            ImageRecord record = exchange.getIn().getBody(ImageRecord.class);
+	        	HashMap record = exchange.getIn().getBody(HashMap.class);
 	            Map<String, Object> payload = new HashMap<>();
-	            payload.put("Byline__c", record.getImageByline());
-                payload.put("Headline__c", record.getImageHeadline());
-                payload.put("Reference__c", record.getReference());
-                payload.put("cur_Price__c", record.getPrice());
-                if (record.getPurchaseDate() != null && !record.getPurchaseDate().isEmpty()) {
-                    LocalDate localDate = LocalDate.parse(record.getPurchaseDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    payload.put("dt_DownloadDate__c", localDate.toString());
-                }
-                payload.put("pkl_BillingStatus__c", "Bezogen");
-                payload.put("pkl_Delivery__c", "Bild");
-                payload.put("pkl_LicenseType__c", record.getLicenceInformation());
-                payload.put("pkl_SubscriptionID__c", record.getSubscriptionInformation());
-                payload.put("recordTypeid", "012bW000000G9KIQA0");
-                payload.put("txta_Caption__c", record.getImageCaption());
-                payload.put("txt_Contact_UUID__c", record.getUserUuid());
-                payload.put("txt_Customer_UUID__c", record.getCompanyUuid());
-                payload.put("txt_ImageNumber__c", record.getImageOid());
-                payload.put("txt_ImageTitle__c", record.getImageObjectName());
-                payload.put("txt_LoginName__c", record.getUserLoginName());
-                payload.put("txt_Partner_Photo_Code__c", record.getSourcePhotoCode());
-                payload.put("txt_Price_Calculation_UUID__c", record.getConditionUuid());
+//	            payload.put("Byline__c", record.getImageByline());
+//                payload.put("Headline__c", record.getImageHeadline());
+//                payload.put("Reference__c", record.getReference());
+//                payload.put("cur_Price__c", record.getPrice());
+//                if (record.getPurchaseDate() != null && !record.getPurchaseDate().isEmpty()) {
+//                    LocalDate localDate = LocalDate.parse(record.getPurchaseDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//                    payload.put("dt_DownloadDate__c", localDate.toString());
+//                }
+//                payload.put("pkl_BillingStatus__c", "Bezogen");
+//                payload.put("pkl_Delivery__c", "Bild");
+//                payload.put("pkl_LicenseType__c", record.getLicenceInformation());
+//                payload.put("pkl_SubscriptionID__c", record.getSubscriptionInformation());
+//                payload.put("recordTypeid", "012bW000000G9KIQA0");
+//                payload.put("txta_Caption__c", record.getImageCaption());
+//                payload.put("txt_Contact_UUID__c", record.getUserUuid());
+//                payload.put("txt_Customer_UUID__c", record.getCompanyUuid());
+//                payload.put("txt_ImageNumber__c", record.getImageOid());
+//                payload.put("txt_ImageTitle__c", record.getImageObjectName());
+//                payload.put("txt_LoginName__c", record.getUserLoginName());
+//                payload.put("txt_Partner_Photo_Code__c", record.getSourcePhotoCode());
+//                payload.put("txt_Price_Calculation_UUID__c", record.getConditionUuid());
                 //payload.put("txt_UUID__c", record.getUuid());
 	            exchange.getIn().setBody(payload);
 	        })
@@ -78,127 +73,5 @@ public class CsvToSalesforceRoute extends RouteBuilder {
 	        })
 	        .toD("file:data/success?fileName=${file:name}");
 	}
-	
-	
-	@CsvRecord(separator = ",", skipFirstLine = true)
-	public class ImageRecord {
 
-		@DataField(pos = 1)
-		private String reference;
-		@DataField(pos = 2)
-		private String price;
-		@DataField(pos = 3)
-		private String purchaseDate;
-		@DataField(pos = 4)
-		private String licenceInformation;
-		@DataField(pos = 5)
-		private String subscriptionInformation;
-		@DataField(pos = 6)
-		private String uuid;
-		@DataField(pos = 7)
-		private String imageByline;
-		@DataField(pos = 8)
-		private String imageHeadline;
-		@DataField(pos = 9)
-		private String imageCaption;
-		@DataField(pos = 10)
-		private String imageOid;
-		@DataField(pos = 11)
-		private String imageObjectName;
-		@DataField(pos = 12)
-		private String userUuid;
-		@DataField(pos = 13)
-		private String userLoginName;
-		@DataField(pos = 14)
-		private String companyUuid;
-		@DataField(pos = 15)
-		private String sourcePhotoCode;
-		@DataField(pos = 16)
-		private String conditionUuid;
-
-		// Getters
-		public String getReference() {
-			return reference;
-		}
-
-		public String getPrice() {
-			return price;
-		}
-
-		public String getPurchaseDate() {
-			return purchaseDate;
-		}
-
-		public String getLicenceInformation() {
-			return licenceInformation;
-		}
-
-		public String getSubscriptionInformation() {
-			return subscriptionInformation;
-		}
-
-		public String getUuid() {
-			return uuid;
-		}
-
-		public String getImageByline() {
-			return imageByline;
-		}
-
-		public String getImageHeadline() {
-			return imageHeadline;
-		}
-
-		public String getImageCaption() {
-			return imageCaption;
-		}
-
-		public String getImageOid() {
-			return imageOid;
-		}
-
-		public String getImageObjectName() {
-			return imageObjectName;
-		}
-
-		public String getUserUuid() {
-			return userUuid;
-		}
-
-		public String getUserLoginName() {
-			return userLoginName;
-		}
-
-		public String getCompanyUuid() {
-			return companyUuid;
-		}
-
-		public String getSourcePhotoCode() {
-			return sourcePhotoCode;
-		}
-
-		public String getConditionUuid() {
-			return conditionUuid;
-		}
-	}
-	
-		public static SalesforceComponent getSalesforceComponent() {
-			SalesforceComponent salesforce = new SalesforceComponent();
-
-			SalesforceLoginConfig loginConfig = new SalesforceLoginConfig();
-			loginConfig.setLoginUrl("https://test.salesforce.com");
-			loginConfig
-					.setClientId("3MVG9VwL6uEwP_uTvojRCpFFuAAWYfVXOQrHbjUepFugdba1XF0t_4yKNUEHwkLmByESJEcM4obBUvKWJjMFH");
-			loginConfig.setUserName("sfintegration@keystone-sda.ch.partialsc");
-
-			KeyStoreParameters ksp = new KeyStoreParameters();
-			ksp.setResource("file:data/keystore.jks");
-			ksp.setPassword("ai11"); // password for the keystore
-
-			loginConfig.setKeystore(ksp);
-
-			salesforce.setLoginConfig(loginConfig);
-
-			return salesforce;
-		}
 }

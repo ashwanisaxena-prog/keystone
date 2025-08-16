@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ch.keystone</groupId>
-  <artifactId>keystone-singleuse-integration</artifactId>
+  <artifactId>keystone</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0</version>
 
   <name>A Camel Route</name>
 

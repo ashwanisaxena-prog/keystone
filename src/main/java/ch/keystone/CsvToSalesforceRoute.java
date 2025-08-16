@@ -34,32 +34,32 @@ public class CsvToSalesforceRoute extends RouteBuilder {
 	            exchange.getIn().setHeader("originalFileBody", originalCsv);
 	        })
 	        .log("Received CSV file: ${file:name}")
-	        .unmarshal().bindy(BindyType.Csv, HashMap.class)
+	        .unmarshal().bindy(BindyType.Csv, ImageRecord.class)
 	        // your existing processing logic here...
 	        .process(exchange -> {
-	        	HashMap record = exchange.getIn().getBody(HashMap.class);
+	            ImageRecord record = exchange.getIn().getBody(ImageRecord.class);
 	            Map<String, Object> payload = new HashMap<>();
-//	            payload.put("Byline__c", record.getImageByline());
-//                payload.put("Headline__c", record.getImageHeadline());
-//                payload.put("Reference__c", record.getReference());
-//                payload.put("cur_Price__c", record.getPrice());
-//                if (record.getPurchaseDate() != null && !record.getPurchaseDate().isEmpty()) {
-//                    LocalDate localDate = LocalDate.parse(record.getPurchaseDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//                    payload.put("dt_DownloadDate__c", localDate.toString());
-//                }
-//                payload.put("pkl_BillingStatus__c", "Bezogen");
-//                payload.put("pkl_Delivery__c", "Bild");
-//                payload.put("pkl_LicenseType__c", record.getLicenceInformation());
-//                payload.put("pkl_SubscriptionID__c", record.getSubscriptionInformation());
-//                payload.put("recordTypeid", "012bW000000G9KIQA0");
-//                payload.put("txta_Caption__c", record.getImageCaption());
-//                payload.put("txt_Contact_UUID__c", record.getUserUuid());
-//                payload.put("txt_Customer_UUID__c", record.getCompanyUuid());
-//                payload.put("txt_ImageNumber__c", record.getImageOid());
-//                payload.put("txt_ImageTitle__c", record.getImageObjectName());
-//                payload.put("txt_LoginName__c", record.getUserLoginName());
-//                payload.put("txt_Partner_Photo_Code__c", record.getSourcePhotoCode());
-//                payload.put("txt_Price_Calculation_UUID__c", record.getConditionUuid());
+	            payload.put("Byline__c", record.getImageByline());
+                payload.put("Headline__c", record.getImageHeadline());
+                payload.put("Reference__c", record.getReference());
+                payload.put("cur_Price__c", record.getPrice());
+                if (record.getPurchaseDate() != null && !record.getPurchaseDate().isEmpty()) {
+                    LocalDate localDate = LocalDate.parse(record.getPurchaseDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    payload.put("dt_DownloadDate__c", localDate.toString());
+                }
+                payload.put("pkl_BillingStatus__c", "Bezogen");
+                payload.put("pkl_Delivery__c", "Bild");
+                payload.put("pkl_LicenseType__c", record.getLicenceInformation());
+                payload.put("pkl_SubscriptionID__c", record.getSubscriptionInformation());
+                payload.put("recordTypeid", "012bW000000G9KIQA0");
+                payload.put("txta_Caption__c", record.getImageCaption());
+                payload.put("txt_Contact_UUID__c", record.getUserUuid());
+                payload.put("txt_Customer_UUID__c", record.getCompanyUuid());
+                payload.put("txt_ImageNumber__c", record.getImageOid());
+                payload.put("txt_ImageTitle__c", record.getImageObjectName());
+                payload.put("txt_LoginName__c", record.getUserLoginName());
+                payload.put("txt_Partner_Photo_Code__c", record.getSourcePhotoCode());
+                payload.put("txt_Price_Calculation_UUID__c", record.getConditionUuid());
                 //payload.put("txt_UUID__c", record.getUuid());
 	            exchange.getIn().setBody(payload);
 	        })

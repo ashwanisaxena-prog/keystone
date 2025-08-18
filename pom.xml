@@ -102,33 +102,32 @@
           <mainClass>ch.keystone.Application</mainClass>
         </configuration>
       </plugin>
-
-       <plugin>
+		<plugin>
       <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-assembly-plugin</artifactId>
-      <version>3.6.0</version>
-      <configuration>
-        <descriptorRefs>
-          <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
-        <archive>
-          <manifest>
-            <mainClass>ch.keystone.Application</mainClass>
-          </manifest>
-        </archive>
-      </configuration>
+      <artifactId>maven-shade-plugin</artifactId>
+      <version>3.4.1</version>
       <executions>
         <execution>
-          <id>make-assembly</id>
           <phase>package</phase>
           <goals>
-            <goal>single</goal>
+            <goal>shade</goal>
           </goals>
+          <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+            <transformers>
+              <!-- Merge Camel META-INF/services resources -->
+              <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              <!-- Set Main-Class in MANIFEST.MF -->
+              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                <mainClass>ch.keystone.Application</mainClass>
+              </transformer>
+            </transformers>
+            <finalName>keystone-shaded</finalName>
+          </configuration>
         </execution>
       </executions>
     </plugin>
-
-    </plugins>
+     </plugins>
   </build>
 
 </project>

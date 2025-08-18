@@ -16,7 +16,7 @@ public class SalesforceConnection {
 		loginConfig.setUserName("sfintegration@keystone-sda.ch.partialsc");
 
 		KeyStoreParameters ksp = new KeyStoreParameters();
-		ksp.setResource("file:data/keystore.jks");
+		ksp.setResource("data/keystore.jks");
 		ksp.setPassword("ai11"); // password for the keystore
 
 		loginConfig.setKeystore(ksp);

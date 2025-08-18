@@ -14,7 +14,7 @@ public class Application {
 		camelContext.addComponent("salesforce", SalesforceConnection.getSalesforceComponent());
 
 		camelContext.start();
-		Thread.sleep(5*60*1000); // keep running for 10 sec (or longer if needed)
+		Thread.sleep(10*1000); // keep running for 10 sec (or longer if needed)
 		camelContext.stop();
 	}
 }

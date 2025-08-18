@@ -17,26 +17,24 @@ public class ImageRecord {
 	@DataField(pos = 5)
 	private String subscriptionInformation;
 	@DataField(pos = 6)
-	private String uuid;
-	@DataField(pos = 7)
 	private String imageByline;
-	@DataField(pos = 8)
+	@DataField(pos = 7)
 	private String imageHeadline;
-	@DataField(pos = 9)
+	@DataField(pos = 8)
 	private String imageCaption;
-	@DataField(pos = 10)
+	@DataField(pos = 9)
 	private String imageOid;
-	@DataField(pos = 11)
+	@DataField(pos = 10)
 	private String imageObjectName;
-	@DataField(pos = 12)
+	@DataField(pos = 11)
 	private String userUuid;
-	@DataField(pos = 13)
+	@DataField(pos = 12)
 	private String userLoginName;
-	@DataField(pos = 14)
+	@DataField(pos = 13)
 	private String companyUuid;
-	@DataField(pos = 15)
+	@DataField(pos = 14)
 	private String sourcePhotoCode;
-	@DataField(pos = 16)
+	@DataField(pos = 15)
 	private String conditionUuid;
 
 	// Getters
@@ -58,10 +56,6 @@ public class ImageRecord {
 
 	public String getSubscriptionInformation() {
 		return subscriptionInformation;
-	}
-
-	public String getUuid() {
-		return uuid;
 	}
 
 	public String getImageByline() {

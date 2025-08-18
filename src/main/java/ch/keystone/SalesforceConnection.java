@@ -10,14 +10,13 @@ public class SalesforceConnection {
 		SalesforceComponent salesforce = new SalesforceComponent();
 
 		SalesforceLoginConfig loginConfig = new SalesforceLoginConfig();
-		loginConfig.setLoginUrl("https://test.salesforce.com");
-		loginConfig
-				.setClientId("3MVG9VwL6uEwP_uTvojRCpFFuAAWYfVXOQrHbjUepFugdba1XF0t_4yKNUEHwkLmByESJEcM4obBUvKWJjMFH");
-		loginConfig.setUserName("sfintegration@keystone-sda.ch.partialsc");
+		loginConfig.setLoginUrl(ConfigLoader.get("salesforce.loginUrl"));
+		loginConfig.setClientId(ConfigLoader.get("salesforce.clientId"));
+		loginConfig.setUserName(ConfigLoader.get("salesforce.username"));
 
 		KeyStoreParameters ksp = new KeyStoreParameters();
-		ksp.setResource("data/keystore.jks");
-		ksp.setPassword("ai11"); // password for the keystore
+		ksp.setResource("keystore.jks");
+		ksp.setPassword(ConfigLoader.get("salesforce.keystorePassword")); // password for the keystore
 
 		loginConfig.setKeystore(ksp);
 

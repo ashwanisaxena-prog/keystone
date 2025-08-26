@@ -45,4 +45,4 @@ jobs:
           script: |
             cd /home/${{ secrets.AZURE_VM_USER }}/app
             pkill -f 'java -jar' || true
-            nohup java -jar keystone-shaded.jar > app.log 2>&1 &
+            nohup java -jar target/keystone-shaded.jar > app.log 2>&1 &

@@ -44,6 +44,6 @@ jobs:
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           script: |
             echo $(pwd)
-            cd cd /home/mcp/app
+            cd cd /home/mvp/app
             pkill -f 'java -jar' || true
             nohup java -jar target/keystone-shaded.jar > app.log 2>&1 &

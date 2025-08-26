@@ -43,6 +43,7 @@ jobs:
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           script: |
+            pwd
             cd app
             pkill -f 'java -jar' || true
             nohup java -jar target/keystone-shaded.jar > app.log 2>&1 &

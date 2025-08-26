@@ -52,6 +52,10 @@
 	    <groupId>org.apache.camel</groupId>
 	    <artifactId>camel-bindy</artifactId>
 	</dependency>
+	<dependency>
+    	<groupId>org.apache.camel</groupId>
+    	<artifactId>camel-ftp</artifactId>
+	</dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
@@ -91,40 +95,39 @@
       <!-- Allows the example to be run via 'mvn camel:run' -->
       <plugin>
         <groupId>org.apache.camel</groupId>
-        <version>3.18.4</version>
         <artifactId>camel-maven-plugin</artifactId>
+        <version>3.18.4</version>
         <configuration>
           <logClasspath>true</logClasspath>
           <mainClass>ch.keystone.Application</mainClass>
         </configuration>
       </plugin>
-      
-      <plugin>
+		<plugin>
       <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-assembly-plugin</artifactId>
-      <version>3.6.0</version>
-      <configuration>
-        <descriptorRefs>
-          <descriptorRef>jar-with-dependencies</descriptorRef>
-        </descriptorRefs>
-        <archive>
-          <manifest>
-            <mainClass>ch.keystone.Application</mainClass>
-          </manifest>
-        </archive>
-      </configuration>
+      <artifactId>maven-shade-plugin</artifactId>
+      <version>3.4.1</version>
       <executions>
         <execution>
-          <id>make-assembly</id>
           <phase>package</phase>
           <goals>
-            <goal>single</goal>
+            <goal>shade</goal>
           </goals>
+          <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+            <transformers>
+              <!-- Merge Camel META-INF/services resources -->
+              <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              <!-- Set Main-Class in MANIFEST.MF -->
+              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                <mainClass>ch.keystone.Application</mainClass>
+              </transformer>
+            </transformers>
+            <finalName>keystone-shaded</finalName>
+          </configuration>
         </execution>
       </executions>
     </plugin>
-
-    </plugins>
+     </plugins>
   </build>
 
 </project>

@@ -1,20 +1,15 @@
 package ch.keystone;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.main.Main;
 
 public class Application {
-	public static void main(String[] args) throws Exception {
-		CamelContext camelContext = new DefaultCamelContext();
-
-		// Add our Route
-		camelContext.addRoutes(new CsvToSalesforceRoute());
-
-		// Add Salesforce Connection Config
-		camelContext.addComponent("salesforce", SalesforceConnection.getSalesforceComponent());
-
-		camelContext.start();
-		Thread.sleep(10*1000); // keep running for 10 sec (or longer if needed)
-		camelContext.stop();
+	/**
+	 * A main() so we can easily run these routing rules in our IDE
+	 */
+	public static void main(String... args) throws Exception {
+		Main main = new Main();
+		main.configure().addRoutesBuilder(new CsvToSalesforceRoute());
+		main.bind("salesforce", SalesforceConnection.getSalesforceComponent());
+		main.run(args);
 	}
 }

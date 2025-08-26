@@ -44,4 +44,4 @@ jobs:
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           script: |
             echo $(pwd)
-            cd cd /home/mvp/app
+            cd /home/mvp/app

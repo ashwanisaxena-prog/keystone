@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           source: "target/keystone-shaded.jar"
-          target: "/home/${{ secrets.AZURE_VM_USER }}/app/"
+          target: "/home/${{ secrets.AZURE_VM_USER }}/app/keystone.jar"
 
       # 5. SSH into VM and run JAR
       - name: Run JAR on Azure VM

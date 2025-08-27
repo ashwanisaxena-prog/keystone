@@ -1,2 +1,3 @@
 pkill -f 'java -jar' || true
-nohup java -jar target/keystone-shaded.jar > app.log 2>&1 &
+sleep 1
+nohup java -jar target/keystone-shaded.jar >> app.log 2>&1 &

@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           source: "target/${{ env.JAR_NAME }}"
-          target: "/home/${{ secrets.AZURE_VM_USER }}/app/application.jar"
+          target: "/home/${{ secrets.AZURE_VM_USER }}/app"
 
       # 5. SSH into VM and run JAR
       - name: Run JAR on Azure VM
@@ -63,5 +63,6 @@ jobs:
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           script: |
             cd /home/mvp/app
+            mv target/${{ env.JAR_NAME }} application.jar
             chmod 754 run.sh
             ./run.sh

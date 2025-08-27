@@ -25,6 +25,18 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
+      - name: Upload JAR to Azure Blob
+        uses: azure/cli@v1
+        with:
+          inlineScript: |
+            az storage blob upload \
+              --account-name jarrepo \
+              --container-name library \
+              --name keystone-shaded.jar \
+              --file target/keystone-shaded.jar \
+              --auth-mode key \
+              --account-key ${{ secrets.AZURE_STORAGE_KEY }}
+
       # 4. Copy JAR to Azure VM
       - name: Copy JAR to Azure VM
         uses: appleboy/scp-action@v0.1.7
@@ -32,9 +44,7 @@ jobs:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
-          source: |
-            target/keystone-shaded.jar
-            script/*.sh
+          source: "target/keystone-shaded.jar"
           target: "/home/${{ secrets.AZURE_VM_USER }}/app"
 
       # 5. SSH into VM and run JAR

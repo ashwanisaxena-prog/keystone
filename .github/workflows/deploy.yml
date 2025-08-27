@@ -25,6 +25,13 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
+      - name: Rename JAR with build number
+        run: |
+          BUILD_NUMBER=${{ github.run_number }}
+          JAR_NAME="keystone-shaded-$BUILD_NUMBER.jar"
+          mv target/keystone-shaded.jar target/$JAR_NAME
+          echo "JAR_NAME=$JAR_NAME" >> $GITHUB_ENV
+
       - name: Upload JAR to Azure Blob
         uses: azure/cli@v1
         with:
@@ -32,8 +39,8 @@ jobs:
             az storage blob upload \
               --account-name jarrepo \
               --container-name library \
-              --name keystone-shaded.jar \
-              --file target/keystone-shaded.jar \
+              --name ${{ env.JAR_NAME }} \
+              --file target/${{ env.JAR_NAME }} \
               --auth-mode key \
               --account-key ${{ secrets.AZURE_STORAGE_KEY }}
 
@@ -44,8 +51,8 @@ jobs:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
-          source: "target/keystone-shaded.jar"
-          target: "/home/${{ secrets.AZURE_VM_USER }}/app"
+          source: "target/${{ env.JAR_NAME }}"
+          target: "/home/${{ secrets.AZURE_VM_USER }}/app/application.jar"
 
       # 5. SSH into VM and run JAR
       - name: Run JAR on Azure VM

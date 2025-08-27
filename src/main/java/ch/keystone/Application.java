@@ -12,5 +12,6 @@ public class Application {
 		main.configure().addRoutesBuilder(new CsvToSalesforceRoute());
 		main.bind("salesforce", SalesforceConnection.getSalesforceComponent());
 		main.run(args);
+		System.out.println("application shutdown");
 	}
 }
